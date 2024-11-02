@@ -1,5 +1,12 @@
+import Layout from "./layout/Layout";
+import Dashboard from "./pages/Dashboard";
+
 function App() {
-  return <>Hello World</>;
+  return (
+    <Layout>
+      <Dashboard />
+    </Layout>
+  );
 }
 
 export default App;
