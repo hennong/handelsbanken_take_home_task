@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { BaseTile, Header } from "../components/common";
+import { DefaultLocationTile } from "../components/common/tiles";
 
 function Dashboard() {
   return (
@@ -7,8 +8,8 @@ function Dashboard() {
       <Header />
       <Fragment>
         <BaseTile className="col-span-1"> My location </BaseTile>
-        <BaseTile className="col-span-1"> Default location 1 </BaseTile>
-        <BaseTile className="col-span-1"> Default location 2 </BaseTile>
+        <DefaultLocationTile />
+        <DefaultLocationTile />
       </Fragment>
     </Fragment>
   );
