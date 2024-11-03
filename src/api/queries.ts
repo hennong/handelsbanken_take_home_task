@@ -13,9 +13,10 @@ const getWeatherData = async (params: IGeolocation) => {
   return response;
 };
 
-export const useWeatherData = (params: ILocation) => {
+export const useWeatherData = (params: ILocation, enabled: boolean = true) => {
   return useQuery({
-    queryKey: [params.name],
-    queryFn: () => getWeatherData(params.geolocation),
+    queryKey: [params?.name],
+    queryFn: () => getWeatherData(params?.geolocation),
+    enabled,
   });
 };

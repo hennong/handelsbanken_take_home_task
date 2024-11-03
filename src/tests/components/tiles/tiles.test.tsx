@@ -1,5 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
-import { DefaultLocationTile } from "../../../components/common";
+import {
+  DefaultLocationTile,
+  MyLocationTile,
+} from "../../../components/common";
 import { render } from "@testing-library/react";
 import { ILocation } from "../../../types/location";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -58,5 +61,22 @@ describe("Tiles", () => {
 
     const degrees = getByText("0°C");
     expect(degrees).toBeInTheDocument();
+  });
+
+  it("renders MyLocationTile component", () => {
+    const { getByTestId, getByText } = render(
+      <QueryClientProvider client={client}>
+        <MyLocationTile />
+      </QueryClientProvider>
+    );
+
+    const component = getByTestId("my-location-tile");
+    expect(component).toBeInTheDocument();
+
+    const name = getByText("My location");
+    expect(name).toBeInTheDocument();
+
+    const locationInfo = getByText("Geolocation is not supported.");
+    expect(locationInfo).toBeInTheDocument();
   });
 });
