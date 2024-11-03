@@ -12,7 +12,7 @@ import {
 function Dashboard() {
   return (
     <Fragment>
-      <Header />
+      <Header title={"Dashboard"} />
       <Fragment>
         <MyLocationTile />
         <DefaultLocationTile location={defaultLocationBerlin} />

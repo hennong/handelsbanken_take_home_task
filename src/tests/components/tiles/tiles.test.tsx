@@ -6,6 +6,7 @@ import {
 import { render } from "@testing-library/react";
 import { ILocation } from "../../../types/location";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MemoryRouter } from "react-router-dom";
 
 vi.mock("../../../api", () => ({
   useWeatherData: vi.fn().mockReturnValue({
@@ -49,7 +50,9 @@ describe("Tiles", () => {
   it("renders DefaultLocationTile component", () => {
     const { getByTestId, getByText } = render(
       <QueryClientProvider client={client}>
-        <DefaultLocationTile location={mockLocation} />
+        <MemoryRouter>
+          <DefaultLocationTile location={mockLocation} />
+        </MemoryRouter>
       </QueryClientProvider>
     );
 
@@ -66,7 +69,9 @@ describe("Tiles", () => {
   it("renders MyLocationTile component", () => {
     const { getByTestId, getByText } = render(
       <QueryClientProvider client={client}>
-        <MyLocationTile />
+        <MemoryRouter>
+          <MyLocationTile />
+        </MemoryRouter>
       </QueryClientProvider>
     );
 

@@ -3,12 +3,14 @@ import { useWeatherData } from "../../../api";
 import BaseTile from "./BaseTile";
 import { ILocation } from "../../../types/location";
 import Skeleton from "react-loading-skeleton";
+import { useNavigate } from "react-router-dom";
 
 function MyLocationTile() {
+  const navigate = useNavigate();
   const [userLocation, setUserLocation] = useState<ILocation | undefined>(
     undefined
   );
-  const [errorCode, setErrorCode] = useState<number>(0);
+  const [errorCode, setErrorCode] = useState<number | undefined>(undefined);
 
   const { data: weatherData } = useWeatherData(
     userLocation!,
@@ -32,6 +34,7 @@ function MyLocationTile() {
               lon,
             },
           });
+          setErrorCode(0);
         },
         (error) => {
           console.error("Error getting user location:", error);
@@ -44,10 +47,10 @@ function MyLocationTile() {
     }
   }, []);
 
-  const getLocationInfo = (errorCode: number) => {
+  const getLocationInfo = (errorCode: number | undefined) => {
     switch (errorCode) {
       case 1:
-        return "Location access denied.";
+        return "Location access was denied.";
       case 2:
         return "Postion unavailable.";
       case 3:
@@ -59,10 +62,18 @@ function MyLocationTile() {
     }
   };
 
+  const goToDetails = () => {
+    if (!errorCode)
+      navigate({
+        pathname: "/details",
+      });
+  };
+
   return (
     <BaseTile //
       className="hover:bg-[#e3f7fabb]"
       testId="my-location-tile"
+      onClick={goToDetails}
     >
       <div className="flex justify-between w-full items-center text-2xl">
         <h3 className="">My location</h3>
