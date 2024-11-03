@@ -3,6 +3,8 @@ import { useWeatherData } from "../../../api";
 import { ILocation } from "../../../types/location";
 import BaseTile from "./BaseTile";
 import { useNavigate } from "react-router-dom";
+import { useWeatherDataStore } from "../../../store/dataStore";
+import { useLocationStore } from "../../../store/locationStore";
 
 interface IDefaultLocationTile {
   location: ILocation;
@@ -10,12 +12,20 @@ interface IDefaultLocationTile {
 
 function DefaultLocationTile({ location }: IDefaultLocationTile) {
   const navigate = useNavigate();
+  const setWeatherDataStore = useWeatherDataStore(
+    (state) => state.setWeatherData
+  );
+  const setLocationStore = useLocationStore((state) => state.setLocation);
 
   const { data: weatherData } = useWeatherData(location);
   const currentData =
     weatherData?.data.properties.timeseries[0].data.instant.details;
 
   const goToDetails = () => {
+    if (!currentData) return;
+
+    setWeatherDataStore(currentData);
+    setLocationStore(location);
     navigate({
       pathname: "/details",
     });

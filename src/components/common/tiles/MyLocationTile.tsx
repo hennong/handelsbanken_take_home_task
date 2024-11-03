@@ -4,9 +4,16 @@ import BaseTile from "./BaseTile";
 import { ILocation } from "../../../types/location";
 import Skeleton from "react-loading-skeleton";
 import { useNavigate } from "react-router-dom";
+import { useWeatherDataStore } from "../../../store/dataStore";
+import { useLocationStore } from "../../../store/locationStore";
 
 function MyLocationTile() {
   const navigate = useNavigate();
+  const setWeatherDataStore = useWeatherDataStore(
+    (state) => state.setWeatherData
+  );
+  const setLocationStore = useLocationStore((state) => state.setLocation);
+
   const [userLocation, setUserLocation] = useState<ILocation | undefined>(
     undefined
   );
@@ -63,10 +70,13 @@ function MyLocationTile() {
   };
 
   const goToDetails = () => {
-    if (!errorCode)
+    if (!errorCode && currentData) {
+      setLocationStore(userLocation);
+      setWeatherDataStore(currentData);
       navigate({
         pathname: "/details",
       });
+    }
   };
 
   return (
