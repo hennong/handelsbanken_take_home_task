@@ -6,6 +6,7 @@ import Skeleton from "react-loading-skeleton";
 import { useNavigate } from "react-router-dom";
 import { useWeatherDataStore } from "../../../store/dataStore";
 import { useLocationStore } from "../../../store/locationStore";
+import { getCurrentData } from "../../../utils/functions";
 
 function MyLocationTile() {
   const navigate = useNavigate();
@@ -19,13 +20,10 @@ function MyLocationTile() {
   );
   const [errorCode, setErrorCode] = useState<number | undefined>(undefined);
 
-  const { data: weatherData } = useWeatherData(
+  const { data: weathertData } = useWeatherData(
     userLocation!,
     userLocation !== undefined
   );
-
-  const currentData =
-    weatherData?.data.properties.timeseries[0].data.instant.details;
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -68,6 +66,8 @@ function MyLocationTile() {
         return null;
     }
   };
+
+  const currentData = getCurrentData(weathertData?.data);
 
   const goToDetails = () => {
     if (!errorCode && currentData) {

@@ -11,4 +11,8 @@ export interface IWeatherData {
   ultraviolet_index_clear_sky: number;
   wind_from_direction: number;
   wind_speed: number;
+  air_temperature_max: number;
+  air_temperature_min: number;
+  precipitation_amount: number;
+  symbol_code: string;
 }

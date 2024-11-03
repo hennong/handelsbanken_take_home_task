@@ -2,12 +2,41 @@ import { Fragment } from "react";
 import { Header, BaseTile } from "../components/common";
 import { useWeatherDataStore } from "../store/dataStore";
 import { useLocationStore } from "../store/locationStore";
+import { useSunrise } from "../api";
 
 function Details() {
   const weatherData = useWeatherDataStore((state) => state.weatherData);
-  const location = useLocationStore((state) => state.location);
+  const location = useLocationStore((state) => state.location)!;
+
+  const today = new Date();
+  const todayAsISOString = today.toISOString().split("T")[0];
+
+  const { data: sunriseData } = useSunrise(
+    {
+      lon: location?.geolocation.lon,
+      lat: location?.geolocation.lat,
+      date: todayAsISOString,
+      //TODO: Add calculation for offset
+      offset: "+01:00",
+    },
+    location?.name,
+    location !== undefined
+  );
+
+  const sunrise = sunriseData?.data?.properties?.sunrise?.time;
+  const sunset = sunriseData?.data?.properties?.sunset?.time;
+
+  const getTime = (TimeWithDate: string | undefined) => {
+    if (!TimeWithDate) return;
+
+    const timeWithOffset = TimeWithDate.split("T")[1];
+    const time = timeWithOffset.split("+")[0];
+
+    return time;
+  };
 
   const title = `Details ${location?.name ?? ""}`;
+
   return (
     <Fragment>
       <Header title={title} showReturnButton />
@@ -16,11 +45,15 @@ function Details() {
           <BaseTile testId="temperature-tile">
             <div className="flex flex-col items-center">
               <span className="mb-4 text-xl">Temperature</span>
-              <span className="text-lg">Sunny</span>
-              <div className="text-2xl">{weatherData.air_temperature}</div>
+              <span className="text-lg">
+                {weatherData.symbol_code.split("_")[0]}{" "}
+              </span>
+              <div className="text-2xl pt-2">
+                {weatherData.air_temperature}°C
+              </div>
               <div className="flex gap-4 text-lg">
-                <span>H: 10C</span>
-                <span>L: 10C</span>
+                <span>H: {weatherData.air_temperature_max}°C</span>
+                <span>L: {weatherData.air_temperature_min}°C</span>
               </div>
             </div>
           </BaseTile>
@@ -32,11 +65,11 @@ function Details() {
             <div className="divide-y divide-solid divide-[#4b595e] gap-2 text-lg">
               <div className="flex justify-between">
                 <span>Sunrise</span>
-                <span>8:00</span>
+                <span>{getTime(sunrise)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Sunset</span>
-                <span>21:00</span>
+                <span>{getTime(sunset)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Wind speed</span>
