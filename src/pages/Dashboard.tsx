@@ -3,6 +3,7 @@ import {
   Header,
   DefaultLocationTile,
   MyLocationTile,
+  SettingsTile,
 } from "../components/common";
 import {
   defaultLocationAmsterdam,
@@ -17,6 +18,8 @@ function Dashboard() {
         <MyLocationTile />
         <DefaultLocationTile location={defaultLocationBerlin} />
         <DefaultLocationTile location={defaultLocationAmsterdam} />
+
+        <SettingsTile />
       </Fragment>
     </Fragment>
   );

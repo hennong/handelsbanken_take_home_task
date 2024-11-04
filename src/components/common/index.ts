@@ -1,2 +1,7 @@
 export { default as Header } from "./header";
-export { BaseTile, DefaultLocationTile, MyLocationTile } from "./tiles";
+export {
+  BaseTile,
+  DefaultLocationTile,
+  MyLocationTile,
+  SettingsTile,
+} from "./tiles";

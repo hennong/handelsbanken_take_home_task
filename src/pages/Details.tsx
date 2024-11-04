@@ -3,9 +3,10 @@ import { Header, BaseTile } from "../components/common";
 import { useWeatherDataStore } from "../store/dataStore";
 import { useLocationStore } from "../store/locationStore";
 import { useSunrise } from "../api";
+import { getTemperature } from "../utils/functions";
 
 function Details() {
-  const weatherData = useWeatherDataStore((state) => state.weatherData);
+  const { weatherData, useFahrenheit } = useWeatherDataStore((state) => state);
   const location = useLocationStore((state) => state.location)!;
 
   const today = new Date();
@@ -46,14 +47,26 @@ function Details() {
             <div className="flex flex-col items-center">
               <span className="mb-4 text-xl">Temperature</span>
               <span className="text-lg">
-                {weatherData.symbol_code.split("_")[0]}{" "}
+                {weatherData.symbol_code.split("_")[0]}
               </span>
               <div className="text-2xl pt-2">
-                {weatherData.air_temperature}°C
+                {getTemperature(weatherData.air_temperature, useFahrenheit)}
               </div>
               <div className="flex gap-4 text-lg">
-                <span>H: {weatherData.air_temperature_max}°C</span>
-                <span>L: {weatherData.air_temperature_min}°C</span>
+                <span>
+                  H:{" "}
+                  {getTemperature(
+                    weatherData.air_temperature_max,
+                    useFahrenheit
+                  )}
+                </span>
+                <span>
+                  L:{" "}
+                  {getTemperature(
+                    weatherData.air_temperature_min,
+                    useFahrenheit
+                  )}
+                </span>
               </div>
             </div>
           </BaseTile>
@@ -73,11 +86,11 @@ function Details() {
               </div>
               <div className="flex justify-between">
                 <span>Wind speed</span>
-                <span>{weatherData?.wind_speed}</span>
+                <span>{weatherData?.wind_speed} m/s</span>
               </div>
               <div className="flex justify-between pt-1">
                 <span>Humidity</span>
-                <span>{weatherData?.relative_humidity}</span>
+                <span>{weatherData?.relative_humidity} %</span>
               </div>
               <div className="flex justify-between pt-1">
                 <span>Ultraviolet index</span>
@@ -87,7 +100,7 @@ function Details() {
           </BaseTile>
         </Fragment>
       ) : (
-        <div test-id="no-data-selected">No data selected</div>
+        <div test-id="no-data-selected">No location selected</div>
       )}
     </Fragment>
   );

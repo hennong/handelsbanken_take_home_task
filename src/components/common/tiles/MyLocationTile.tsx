@@ -5,19 +5,20 @@ import { ILocation } from "../../../types/location";
 import Skeleton from "react-loading-skeleton";
 import { useNavigate } from "react-router-dom";
 import { useWeatherDataStore } from "../../../store/dataStore";
+import { getCurrentData, getTemperature } from "../../../utils/functions";
 import { useLocationStore } from "../../../store/locationStore";
-import { getCurrentData } from "../../../utils/functions";
 
 function MyLocationTile() {
   const navigate = useNavigate();
-  const setWeatherDataStore = useWeatherDataStore(
-    (state) => state.setWeatherData
+  const { useFahrenheit, setWeatherData } = useWeatherDataStore(
+    (state) => state
   );
   const setLocationStore = useLocationStore((state) => state.setLocation);
 
   const [userLocation, setUserLocation] = useState<ILocation | undefined>(
     undefined
   );
+
   const [errorCode, setErrorCode] = useState<number | undefined>(undefined);
 
   const { data: weathertData } = useWeatherData(
@@ -52,7 +53,7 @@ function MyLocationTile() {
     }
   }, []);
 
-  const getLocationInfo = (errorCode: number | undefined) => {
+  const getLocationError = (errorCode: number | undefined) => {
     switch (errorCode) {
       case 1:
         return "Location access was denied.";
@@ -72,7 +73,7 @@ function MyLocationTile() {
   const goToDetails = () => {
     if (!errorCode && currentData) {
       setLocationStore(userLocation);
-      setWeatherDataStore(currentData);
+      setWeatherData(currentData);
       navigate({
         pathname: "/details",
       });
@@ -89,7 +90,7 @@ function MyLocationTile() {
         <h3 className="">My location</h3>
         <span className="text-[#b21002]">
           {currentData ? (
-            `${currentData?.air_temperature}°C`
+            getTemperature(currentData?.air_temperature, useFahrenheit)
           ) : (
             <Skeleton width={100} height={24} />
           )}
@@ -99,7 +100,7 @@ function MyLocationTile() {
         <span
           className="text text-[#b21002]" //
         >
-          {getLocationInfo(errorCode)}
+          {getLocationError(errorCode)}
         </span>
       )}
     </BaseTile>

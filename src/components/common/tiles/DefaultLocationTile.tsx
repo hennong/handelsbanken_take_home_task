@@ -5,7 +5,7 @@ import BaseTile from "./BaseTile";
 import { useNavigate } from "react-router-dom";
 import { useWeatherDataStore } from "../../../store/dataStore";
 import { useLocationStore } from "../../../store/locationStore";
-import { getCurrentData } from "../../../utils/functions";
+import { getCurrentData, getTemperature } from "../../../utils/functions";
 
 interface IDefaultLocationTile {
   location: ILocation;
@@ -13,8 +13,8 @@ interface IDefaultLocationTile {
 
 function DefaultLocationTile({ location }: IDefaultLocationTile) {
   const navigate = useNavigate();
-  const setWeatherDataStore = useWeatherDataStore(
-    (state) => state.setWeatherData
+  const { useFahrenheit, setWeatherData } = useWeatherDataStore(
+    (state) => state
   );
   const setLocationStore = useLocationStore((state) => state.setLocation);
 
@@ -26,7 +26,7 @@ function DefaultLocationTile({ location }: IDefaultLocationTile) {
   const goToDetails = () => {
     if (!currentData) return;
 
-    setWeatherDataStore(currentData);
+    setWeatherData(currentData);
     setLocationStore(location);
     navigate({
       pathname: "/details",
@@ -42,7 +42,7 @@ function DefaultLocationTile({ location }: IDefaultLocationTile) {
       <h3>{location.name}</h3>
       <span className="text-[#b21002]">
         {currentData ? (
-          `${currentData?.air_temperature}°C`
+          getTemperature(currentData.air_temperature, useFahrenheit)
         ) : (
           <Skeleton width={150} height={24} />
         )}

@@ -15,3 +15,13 @@ export const getCurrentData = (
     ...currentWeathertData?.next_1_hours.summary,
   };
 };
+
+const celsiusToFahrenheit = (celsius: number) =>
+  (celsius * (5 / 9) + 32).toFixed(1);
+
+export const getTemperature = (celsius: number, useFahrenheit: boolean) => {
+  if (useFahrenheit) {
+    return `${celsiusToFahrenheit(celsius)}°F`;
+  }
+  return `${celsius}°C`;
+};
