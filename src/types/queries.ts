@@ -37,8 +37,8 @@ export interface IWeatherDataResponse {
 }
 
 export interface ISunriseParams {
-  lon: number;
-  lat: number;
+  lon: number | string;
+  lat: number | string;
   date: string;
   offset: string;
 }

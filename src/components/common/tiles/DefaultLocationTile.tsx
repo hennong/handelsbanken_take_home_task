@@ -16,7 +16,7 @@ function DefaultLocationTile({ location }: IDefaultLocationTile) {
   const { useFahrenheit, setWeatherData } = useWeatherDataStore(
     (state) => state
   );
-  const setLocationStore = useLocationStore((state) => state.setLocation);
+  const setLocationStore = useLocationStore((state) => state.setCustomLocation);
 
   const { data: weatherData } = useWeatherData(location);
   const currentWeathertData = weatherData;

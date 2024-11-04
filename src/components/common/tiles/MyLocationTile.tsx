@@ -13,7 +13,8 @@ function MyLocationTile() {
   const { useFahrenheit, setWeatherData } = useWeatherDataStore(
     (state) => state
   );
-  const setLocationStore = useLocationStore((state) => state.setLocation);
+  const { useCustomLocation, customLocation, setDetailsLocation } =
+    useLocationStore((state) => state);
 
   const [userLocation, setUserLocation] = useState<ILocation | undefined>(
     undefined
@@ -21,9 +22,10 @@ function MyLocationTile() {
 
   const [errorCode, setErrorCode] = useState<number | undefined>(undefined);
 
+  const location = useCustomLocation ? customLocation : userLocation;
   const { data: weathertData } = useWeatherData(
-    userLocation!,
-    userLocation !== undefined
+    location!,
+    location !== undefined
   );
 
   useEffect(() => {
@@ -72,7 +74,7 @@ function MyLocationTile() {
 
   const goToDetails = () => {
     if (!errorCode && currentData) {
-      setLocationStore(userLocation);
+      setDetailsLocation(userLocation);
       setWeatherData(currentData);
       navigate({
         pathname: "/details",

@@ -7,7 +7,7 @@ import { getTemperature } from "../utils/functions";
 
 function Details() {
   const { weatherData, useFahrenheit } = useWeatherDataStore((state) => state);
-  const location = useLocationStore((state) => state.location)!;
+  const location = useLocationStore((state) => state.detailsLocation)!;
 
   const today = new Date();
   const todayAsISOString = today.toISOString().split("T")[0];

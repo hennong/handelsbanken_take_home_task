@@ -1,6 +1,6 @@
 export interface IGeolocation {
-  lon: number;
-  lat: number;
+  lon: number | string;
+  lat: number | string;
 }
 
 export interface ILocation {
