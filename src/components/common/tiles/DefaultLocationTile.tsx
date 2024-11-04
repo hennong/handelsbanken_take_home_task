@@ -38,6 +38,7 @@ function DefaultLocationTile({ location }: IDefaultLocationTile) {
       testId="default-location-tile"
       className="flex justify-between hover:bg-[#e3f7fabb] h-[50px] text-2xl"
       onClick={goToDetails}
+      tabIndex={2}
     >
       <h3>{location.name}</h3>
       <span className="text-[#b21002]">

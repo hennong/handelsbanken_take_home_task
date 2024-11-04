@@ -87,6 +87,7 @@ function MyLocationTile() {
       className="hover:bg-[#e3f7fabb]"
       testId="my-location-tile"
       onClick={goToDetails}
+      tabIndex={1}
     >
       <div className="flex justify-between w-full items-center text-2xl">
         <h3 className="">My location</h3>
